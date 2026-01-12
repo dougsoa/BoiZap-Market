@@ -1,0 +1,7 @@
+{
+  "name": "BoiZap Market - Simulador de Rendimento e Mercado",
+  "description": "Uma plataforma inteligente para pecuaristas calcularem o rendimento de carcaça e estimarem o valor financeiro de lotes com base em cotações de mercado em tempo real.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
