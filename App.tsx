@@ -17,6 +17,20 @@ const Header = () => (
   </header>
 );
 
+const PrintHeader = () => (
+  <div className="hidden print:block mb-8 pb-4 border-b-2 border-emerald-800">
+    <div className="flex justify-between items-end">
+      <div>
+        <h1 className="text-2xl font-black text-emerald-800 uppercase tracking-tighter">Relatório de Simulação Pecuária</h1>
+        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Plataforma BoiZap Market</p>
+      </div>
+      <div className="text-right">
+        <p className="text-[9px] text-slate-400 font-black uppercase">Simulado em: {new Date().toLocaleDateString('pt-BR')}</p>
+      </div>
+    </div>
+  </div>
+);
+
 const Footer = () => (
   <footer className="bg-slate-900 text-slate-400 py-8 px-4 mt-auto no-print">
     <div className="max-w-5xl mx-auto text-center text-sm">
@@ -107,11 +121,17 @@ const App: React.FC = () => {
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow max-w-5xl mx-auto w-full px-4 py-8">
         
+        <PrintHeader />
+
         <div className="flex items-center justify-between mb-8 max-w-md mx-auto no-print">
           {[1, 2, 3].map(s => (
             <div key={s} className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${step >= s ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-300 border'}`}>
@@ -266,9 +286,9 @@ const App: React.FC = () => {
         )}
 
         {step === 3 && results && (
-          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 print-full max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-              {/* Header de Resultado mais compacto */}
+          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300 max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col print-full">
+              {/* Header de Resultado */}
               <div className="bg-emerald-800 p-8 text-white relative">
                 <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
                   <div>
@@ -281,28 +301,28 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-2 border border-white/10">
+                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase border border-white/10">
                       {state.batchSize} {state.specie}s
                     </div>
-                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-2 border border-white/10">
+                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase border border-white/10">
                       {state.management}
                     </div>
-                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-2 border border-white/10">
+                    <div className="bg-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase border border-white/10">
                       {state.region}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Grid de métricas secundárias */}
+              {/* Grid de métricas */}
               <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4 bg-white">
                 {[
-                  { label: 'Peso Final/Indiv.', value: (results.totalFinalWeight / state.batchSize).toLocaleString('pt-BR', { maximumFractionDigits: 1 }), unit: 'kg', icon: 'fa-weight-hanging', color: 'text-slate-800' },
-                  { label: 'Peso Total Lote', value: results.totalFinalWeight.toLocaleString('pt-BR', { maximumFractionDigits: 0 }), unit: 'kg', icon: 'fa-boxes-stacked', color: 'text-slate-800' },
-                  { label: 'Produção Líquida', value: results.totalUnits.toLocaleString('pt-BR', { maximumFractionDigits: 1 }), unit: results.quote.unit, icon: 'fa-box-open', color: 'text-emerald-600', highlight: true },
-                  { label: 'Ganho Total', value: `+${results.weightGain.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`, unit: 'kg', icon: 'fa-chart-line', color: 'text-slate-800' }
+                  { label: 'Peso Final/Indiv.', value: (results.totalFinalWeight / state.batchSize).toLocaleString('pt-BR', { maximumFractionDigits: 1 }), unit: 'kg', color: 'text-slate-800' },
+                  { label: 'Peso Total Lote', value: results.totalFinalWeight.toLocaleString('pt-BR', { maximumFractionDigits: 0 }), unit: 'kg', color: 'text-slate-800' },
+                  { label: 'Produção Líquida', value: results.totalUnits.toLocaleString('pt-BR', { maximumFractionDigits: 1 }), unit: results.quote.unit, color: 'text-emerald-600', highlight: true },
+                  { label: 'Ganho Total', value: `+${results.weightGain.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}`, unit: 'kg', color: 'text-slate-800' }
                 ].map((stat, idx) => (
-                  <div key={idx} className={`p-5 rounded-xl border transition-all ${stat.highlight ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                  <div key={idx} className={`p-5 rounded-xl border ${stat.highlight ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
                     <div className="flex items-baseline gap-1">
                       <span className={`text-xl font-black ${stat.color}`}>{stat.value}</span>
@@ -312,7 +332,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              {/* Detalhes Técnicos e Cotação */}
+              {/* Detalhes Técnicos */}
               <div className="px-6 pb-6 pt-2">
                 <div className="bg-slate-50 rounded-xl p-6 border border-slate-100 grid grid-cols-2 lg:grid-cols-4 gap-6 text-[10px]">
                    <div>
@@ -324,17 +344,17 @@ const App: React.FC = () => {
                      <span className="font-black text-slate-700 text-sm">{state.initialWeight} kg</span>
                    </div>
                    <div>
-                     <span className="text-slate-400 uppercase font-black block mb-2 tracking-widest">GMD</span>
+                     <span className="text-slate-400 uppercase font-black block mb-2 tracking-widest">GMD Diário</span>
                      <span className="font-black text-slate-700 text-sm">{state.gmd} kg/dia</span>
                    </div>
                    <div>
-                     <span className="text-slate-400 uppercase font-black block mb-2 tracking-widest">Cotação Atual</span>
+                     <span className="text-slate-400 uppercase font-black block mb-2 tracking-widest">Cotação Ref.</span>
                      <span className="font-black text-emerald-600 text-sm">R$ {results.quote.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} /{results.quote.unit}</span>
                    </div>
                 </div>
               </div>
               
-              <div className="px-6 py-4 bg-white border-t text-[8px] flex justify-between items-center text-slate-400 font-bold uppercase tracking-widest no-print">
+              <div className="px-6 py-4 bg-white border-t text-[8px] flex justify-between items-center text-slate-400 font-bold uppercase tracking-widest">
                 <div className="flex items-center gap-2">
                   <i className="fas fa-database opacity-50"></i>
                   <span>Fonte: {results.quote.source}</span>
@@ -346,9 +366,14 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-center pt-4 no-print pb-20">
-              <button onClick={() => setStep(1)} className="bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 px-12 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-all uppercase tracking-widest text-xs">
-                <i className="fas fa-rotate-left"></i> Nova Simulação
+            {/* Botões de Ação */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4 no-print pb-20">
+              <button onClick={() => setStep(1)} className="w-full sm:w-auto bg-white border border-slate-200 text-slate-600 font-black py-4 px-10 rounded-xl hover:bg-slate-50 transition-all uppercase tracking-widest text-xs flex items-center justify-center gap-2">
+                <i className="fas fa-rotate-left"></i> Novo Cálculo
+              </button>
+              
+              <button onClick={handlePrint} className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 px-12 rounded-xl shadow-lg transition-all uppercase tracking-widest text-xs flex items-center justify-center gap-2">
+                <i className="fas fa-file-pdf"></i> Exportar para PDF
               </button>
             </div>
           </div>

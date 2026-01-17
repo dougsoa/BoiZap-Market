@@ -13,12 +13,10 @@
         
         @media print {
             @page { 
-                margin: 0; 
-                size: auto;
+                margin: 1.5cm; 
+                size: portrait;
             }
             body { 
-                margin: 0; 
-                padding: 1.5cm;
                 background: white !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important; 
@@ -29,25 +27,18 @@
             
             .print-full { 
                 box-shadow: none !important; 
-                border: none !important; 
+                border: 1px solid #e2e8f0 !important; 
                 width: 100% !important;
+                border-radius: 0.5rem !important;
             }
-            
-            /* Preserve card backgrounds and text colors */
+
+            /* Forçar cores no PDF */
             .bg-emerald-800 { background-color: #064e3b !important; color: white !important; }
-            .bg-emerald-700 { background-color: #047857 !important; color: white !important; }
+            .bg-emerald-50 { background-color: #ecfdf5 !important; border-color: #d1fae5 !important; }
             .bg-slate-50 { background-color: #f8fafc !important; }
-            .bg-slate-900 { background-color: #0f172a !important; color: white !important; }
-            .text-emerald-200 { color: #a7f3d0 !important; }
-            .text-emerald-300 { color: #6ee7b7 !important; }
-            .text-emerald-400 { color: #34d399 !important; }
             .text-emerald-600 { color: #059669 !important; }
-            .text-slate-400 { color: #94a3b8 !important; }
-            
-            .rounded-3xl { border-radius: 1.5rem !important; }
-            .rounded-2xl { border-radius: 1rem !important; }
-            
-            .print-header { display: block !important; }
+            .text-emerald-400 { color: #34d399 !important; }
+            .border { border: 1px solid #e2e8f0 !important; }
         }
     </style>
 <script type="importmap">
@@ -60,10 +51,8 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
